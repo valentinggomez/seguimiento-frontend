@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { createClient } from '@supabase/supabase-js'
-import { motion } from 'framer-motion'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -31,15 +30,15 @@ export default function Home() {
     e.preventDefault()
     const { data, error } = await supabase.from('pacientes').insert([form]).select()
 
-    if (error) {
-      alert('❌ Error al guardar el paciente')
-      console.error(error)
-    } else if (data && data[0]) {
+    if (data && data[0]) {
       const nuevoId = data[0].id
       const url = `${window.location.origin}/seguimiento/${nuevoId}`
       setLink(url)
       setEnviado(true)
       setCopiado(false)
+    } else {
+      alert('❌ Error al registrar paciente')
+      console.error(error)
     }
   }
 
@@ -62,39 +61,36 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-sky-100 to-white flex items-center justify-center px-4 py-8">
-      <motion.div
-        className="w-full max-w-xl bg-white rounded-2xl shadow-2xl p-8 border border-gray-200"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="flex flex-col items-center mb-8">
+    <main className="min-h-screen bg-gradient-to-br from-[#f1f6fa] to-[#ffffff] flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-xl bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-10 border border-gray-200">
+        {/* ENCABEZADO */}
+        <div className="flex flex-col items-center mb-8 text-center">
           <Image
             src="/logo-reina.png"
-            alt="Logo Reina Fabiola"
-            width={90}
-            height={90}
+            alt="Logo Clínica Reina Fabiola"
+            width={80}
+            height={80}
             className="mb-4"
           />
-          <h1 className="text-3xl font-bold text-center text-sky-900">
-            Panel Médico · Carga de Pacientes
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#002E5D] leading-tight">
+            Clínica Reina Fabiola
           </h1>
-          <p className="text-sm text-sky-600 mt-1 text-center">
-            Sistema Digital de Seguimiento Postoperatorio
+          <p className="text-sm text-gray-500">
+            Panel Médico · Seguimiento Postoperatorio
           </p>
         </div>
 
+        {/* FORMULARIO O CONFIRMACIÓN */}
         {!enviado ? (
           <form onSubmit={handleSubmit} className="space-y-6">
             {[
-              { label: 'Nombre completo', name: 'nombre', type: 'text' },
-              { label: 'DNI', name: 'dni', type: 'text' },
-              { label: 'Teléfono', name: 'telefono', type: 'tel' },
-              { label: 'Tipo de cirugía', name: 'cirugia', type: 'text' },
-              { label: 'Fecha de cirugía', name: 'fecha_cirugia', type: 'date' }
-            ].map(({ label, name, type }) => (
-              <div key={name} className="relative group">
+              { name: 'nombre', label: 'Nombre completo', type: 'text' },
+              { name: 'dni', label: 'DNI', type: 'text' },
+              { name: 'telefono', label: 'Teléfono de contacto', type: 'tel' },
+              { name: 'cirugia', label: 'Tipo de cirugía', type: 'text' },
+              { name: 'fecha_cirugia', label: 'Fecha de cirugía', type: 'date' }
+            ].map(({ name, label, type }) => (
+              <div key={name} className="relative">
                 <input
                   type={type}
                   name={name}
@@ -102,11 +98,11 @@ export default function Home() {
                   onChange={handleChange}
                   required
                   placeholder=" "
-                  className="peer w-full px-3 pt-6 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="peer w-full border-b-2 border-gray-300 focus:border-sky-700 px-2 pt-6 pb-2 bg-transparent text-gray-800 placeholder-transparent focus:outline-none transition-all"
                 />
                 <label
                   htmlFor={name}
-                  className="absolute left-3 top-2 text-gray-500 text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 transition-all"
+                  className="absolute left-2 top-1 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 transition-all"
                 >
                   {label}
                 </label>
@@ -115,39 +111,36 @@ export default function Home() {
 
             <button
               type="submit"
-              className="w-full bg-sky-700 text-white py-3 rounded-lg hover:bg-sky-800 transition font-semibold shadow-md"
+              className="w-full bg-[#002E5D] text-white py-3 rounded-xl hover:bg-[#004088] transition-all font-semibold shadow-md"
             >
-              Guardar y generar link
+              Guardar paciente y generar link
             </button>
           </form>
         ) : (
-          <div className="space-y-4 text-center">
-            <div className="bg-green-50 p-6 rounded-xl shadow-inner border border-green-200">
-              <h2 className="text-xl font-semibold text-green-700 mb-2">✅ Paciente registrado</h2>
-              <p className="text-gray-700 mb-2">
-                Compartí este link con el paciente para que complete el formulario:
-              </p>
-              <div className="bg-gray-100 p-3 rounded-lg break-all text-sm border border-gray-300">
+          <div className="space-y-5 text-center">
+            <div className="bg-[#E6F7EC] border border-[#B6E1C2] p-6 rounded-2xl shadow-inner">
+              <h2 className="text-green-700 font-bold text-lg mb-2">✅ Paciente registrado</h2>
+              <p className="text-gray-700 mb-2">Compartí este link para completar el seguimiento:</p>
+              <div className="bg-gray-100 p-3 rounded-md text-sm border border-gray-300 break-all select-all">
                 {link}
               </div>
-
               <button
                 onClick={copiarLink}
-                className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                className="mt-3 px-4 py-2 bg-[#0051A3] text-white rounded-lg hover:bg-[#003e7c] transition-all"
               >
-                {copiado ? '📋 Copiado' : '📎 Copiar link'}
+                {copiado ? '📋 Link copiado' : '📎 Copiar link'}
               </button>
             </div>
 
             <button
               onClick={resetForm}
-              className="mt-4 text-sm text-sky-600 underline hover:text-sky-800 transition"
+              className="text-sm text-sky-700 underline hover:text-sky-900"
             >
               + Cargar otro paciente
             </button>
           </div>
         )}
-      </motion.div>
+      </div>
     </main>
   )
 }
