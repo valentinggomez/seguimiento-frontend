@@ -149,28 +149,36 @@ export default function Home() {
             </button>
           </form>
         ) : (
-          <div className="space-y-6 text-center">
-            <div className="bg-[#f0faf5] border border-[#b2e1c4] p-6 rounded-xl shadow-inner">
-              <h2 className="text-green-700 font-semibold text-lg mb-2">✅ Paciente registrado</h2>
-              <p className="text-gray-700 mb-2">Compartí el siguiente link para completar el formulario:</p>
-              <div className="bg-white text-sm p-3 rounded-md border border-gray-300 break-words">
+          <div className="space-y-8 text-center">
+            <div className="border border-[#cfe9dc] bg-[#f6fef9] rounded-2xl shadow-sm px-6 py-8">
+                <div className="flex items-center justify-center gap-2 mb-3 text-green-700">
+                <span className="text-xl">✅</span>
+                <h2 className="text-xl font-semibold tracking-tight">Paciente registrado correctamente</h2>
+                </div>
+
+                <p className="text-gray-700 mb-4 text-sm">
+                Compartí el siguiente enlace con el paciente para que complete el formulario postoperatorio:
+                </p>
+
+                <div className="bg-white border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-800 font-mono break-words">
                 {link}
-              </div>
-              <button
+                </div>
+
+                <button
                 onClick={copiarLink}
-                className="mt-4 px-4 py-2 bg-[#004080] text-white rounded-lg hover:bg-[#002e5c] transition"
-              >
-                {copiado ? '📋 Link copiado' : '📎 Copiar link'}
-              </button>
+                className="mt-5 px-6 py-2.5 text-white bg-[#004080] hover:bg-[#003466] transition rounded-lg shadow-md text-sm font-medium inline-flex items-center gap-2"
+                >
+                📎 {copiado ? 'Link copiado' : 'Copiar link'}
+                </button>
             </div>
 
-              <button
-               onClick={resetForm}
-                className="inline-flex items-center justify-center gap-2 mt-4 px-5 py-2 rounded-lg bg-white border border-gray-300 text-[#004080] hover:bg-gray-50 hover:shadow transition font-medium"
-                  >
-                <span className="text-lg">➕</span> Cargar otro paciente
-              </button>
-          </div>
+            <button
+                onClick={resetForm}
+                className="mx-auto flex items-center gap-2 text-[#004080] hover:text-[#003466] transition text-sm font-medium underline"
+            >
+                <span className="text-lg">＋</span> Cargar otro paciente
+            </button>
+            </div>
         )}
       </div>
     </main>
