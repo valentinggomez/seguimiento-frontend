@@ -21,6 +21,7 @@ export default function Home() {
 
   const [enviado, setEnviado] = useState(false)
   const [link, setLink] = useState('')
+  const [copiado, setCopiado] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -38,13 +39,32 @@ export default function Home() {
       const url = `${window.location.origin}/seguimiento/${nuevoId}`
       setLink(url)
       setEnviado(true)
+      setCopiado(false)
     }
+  }
+
+  const copiarLink = () => {
+    navigator.clipboard.writeText(link)
+    setCopiado(true)
+  }
+
+  const resetForm = () => {
+    setForm({
+      nombre: '',
+      dni: '',
+      telefono: '',
+      cirugia: '',
+      fecha_cirugia: ''
+    })
+    setEnviado(false)
+    setLink('')
+    setCopiado(false)
   }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-sky-100 to-white flex items-center justify-center px-4 py-8">
       <motion.div
-        className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 border border-gray-200"
+        className="w-full max-w-xl bg-white rounded-2xl shadow-2xl p-8 border border-gray-200"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -74,7 +94,7 @@ export default function Home() {
               { label: 'Tipo de cirugía', name: 'cirugia', type: 'text' },
               { label: 'Fecha de cirugía', name: 'fecha_cirugia', type: 'date' }
             ].map(({ label, name, type }) => (
-              <div key={name} className="relative">
+              <div key={name} className="relative group">
                 <input
                   type={type}
                   name={name}
@@ -95,23 +115,36 @@ export default function Home() {
 
             <button
               type="submit"
-              className="w-full bg-sky-700 text-white py-3 rounded-lg hover:bg-sky-800 transition font-medium"
+              className="w-full bg-sky-700 text-white py-3 rounded-lg hover:bg-sky-800 transition font-semibold shadow-md"
             >
-              Guardar y generar link para el paciente
+              Guardar y generar link
             </button>
           </form>
         ) : (
-          <div className="bg-green-50 p-6 rounded-xl text-center shadow-inner border border-green-200">
-            <h2 className="text-xl font-semibold text-green-700 mb-2">✅ Paciente guardado correctamente</h2>
-            <p className="text-gray-700 mb-3">Compartí este link con el paciente para responder su seguimiento:</p>
-            <a
-              href={link}
-              className="text-blue-600 underline break-all text-sm"
-              target="_blank"
-              rel="noopener noreferrer"
+          <div className="space-y-4 text-center">
+            <div className="bg-green-50 p-6 rounded-xl shadow-inner border border-green-200">
+              <h2 className="text-xl font-semibold text-green-700 mb-2">✅ Paciente registrado</h2>
+              <p className="text-gray-700 mb-2">
+                Compartí este link con el paciente para que complete el formulario:
+              </p>
+              <div className="bg-gray-100 p-3 rounded-lg break-all text-sm border border-gray-300">
+                {link}
+              </div>
+
+              <button
+                onClick={copiarLink}
+                className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              >
+                {copiado ? '📋 Copiado' : '📎 Copiar link'}
+              </button>
+            </div>
+
+            <button
+              onClick={resetForm}
+              className="mt-4 text-sm text-sky-600 underline hover:text-sky-800 transition"
             >
-              {link}
-            </a>
+              + Cargar otro paciente
+            </button>
           </div>
         )}
       </motion.div>
