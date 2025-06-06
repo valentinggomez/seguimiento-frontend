@@ -28,19 +28,30 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const { data, error } = await supabase.from('pacientes').insert([form]).select()
+
+    // Convertir fecha de dd/mm/yyyy → yyyy-mm-dd
+    const [dia, mes, anio] = form.fecha_cirugia.split('/')
+    const fechaFormateada = `${anio}-${mes}-${dia}`
+
+    const nuevoPaciente = {
+        ...form,
+        fecha_cirugia: fechaFormateada
+    }
+
+    const { data, error } = await supabase.from('pacientes').insert([nuevoPaciente]).select()
 
     if (data && data[0]) {
-      const nuevoId = data[0].id
-      const url = `${window.location.origin}/seguimiento/${nuevoId}`
-      setLink(url)
-      setEnviado(true)
-      setCopiado(false)
+        const nuevoId = data[0].id
+        const url = `${window.location.origin}/seguimiento/${nuevoId}`
+        setLink(url)
+        setEnviado(true)
+        setCopiado(false)
     } else {
-      alert('❌ Error al registrar paciente')
-      console.error(error)
+        alert('❌ Error al registrar paciente')
+        console.error(error)
     }
   }
+
 
   const copiarLink = () => {
     navigator.clipboard.writeText(link)
@@ -154,10 +165,10 @@ export default function Home() {
             </div>
 
               <button
-                onClick={resetForm}
-                  className="inline-flex items-center justify-center gap-2 mt-4 px-5 py-2 rounded-lg bg-white border border-gray-300 text-[#004080] hover:bg-gray-50 hover:shadow transition font-medium"
-                    >
-                  <span className="text-lg">➕</span> Cargar otro paciente
+               onClick={resetForm}
+                className="inline-flex items-center justify-center gap-2 mt-4 px-5 py-2 rounded-lg bg-white border border-gray-300 text-[#004080] hover:bg-gray-50 hover:shadow transition font-medium"
+                  >
+                <span className="text-lg">➕</span> Cargar otro paciente
               </button>
           </div>
         )}
