@@ -61,34 +61,29 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#f1f6fa] to-[#ffffff] flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-xl bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-10 border border-gray-200">
+    <main className="min-h-screen bg-[#f9fbfc] flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-10 border border-gray-100">
         {/* ENCABEZADO */}
-        <div className="flex flex-col items-center mb-8 text-center">
+        <div className="flex flex-col items-center mb-10 text-center">
           <Image
             src="/logo-reina.png"
             alt="Logo Clínica Reina Fabiola"
-            width={80}
-            height={80}
+            width={90}
+            height={90}
             className="mb-4"
           />
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#002E5D] leading-tight">
-            Clínica Reina Fabiola
-          </h1>
-          <p className="text-sm text-gray-500">
-            Panel Médico · Seguimiento Postoperatorio
-          </p>
+          <h1 className="text-3xl font-bold text-[#1a2c45]">Clínica Reina Fabiola</h1>
+          <p className="text-sm text-gray-500">Panel Médico · Seguimiento Postoperatorio</p>
         </div>
 
-        {/* FORMULARIO O CONFIRMACIÓN */}
         {!enviado ? (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-7">
             {[
               { name: 'nombre', label: 'Nombre completo', type: 'text' },
               { name: 'dni', label: 'DNI', type: 'text' },
               { name: 'telefono', label: 'Teléfono de contacto', type: 'tel' },
               { name: 'cirugia', label: 'Tipo de cirugía', type: 'text' },
-              { name: 'fecha_cirugia', label: 'Fecha de cirugía', type: 'date' }
+              { name: 'fecha_cirugia', label: 'Fecha de cirugía (dd/mm/aaaa)', type: 'text' } // Texto en vez de date
             ].map(({ name, label, type }) => (
               <div key={name} className="relative">
                 <input
@@ -98,11 +93,12 @@ export default function Home() {
                   onChange={handleChange}
                   required
                   placeholder=" "
-                  className="peer w-full border-b-2 border-gray-300 focus:border-sky-700 px-2 pt-6 pb-2 bg-transparent text-gray-800 placeholder-transparent focus:outline-none transition-all"
+                  autoComplete="off"
+                  className="peer w-full px-3 pt-6 pb-2 border-b-2 border-gray-300 text-gray-800 bg-transparent focus:outline-none focus:border-[#004080] transition-all"
                 />
                 <label
                   htmlFor={name}
-                  className="absolute left-2 top-1 text-sm text-gray-500 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 transition-all"
+                  className="absolute left-3 top-2.5 text-sm text-gray-500 peer-focus:top-1 peer-focus:text-xs peer-focus:text-[#004080] peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 transition-all"
                 >
                   {label}
                 </label>
@@ -111,22 +107,22 @@ export default function Home() {
 
             <button
               type="submit"
-              className="w-full bg-[#002E5D] text-white py-3 rounded-xl hover:bg-[#004088] transition-all font-semibold shadow-md"
+              className="w-full bg-[#004080] text-white py-3 rounded-lg hover:bg-[#002e5c] transition font-semibold shadow"
             >
               Guardar paciente y generar link
             </button>
           </form>
         ) : (
-          <div className="space-y-5 text-center">
-            <div className="bg-[#E6F7EC] border border-[#B6E1C2] p-6 rounded-2xl shadow-inner">
-              <h2 className="text-green-700 font-bold text-lg mb-2">✅ Paciente registrado</h2>
-              <p className="text-gray-700 mb-2">Compartí este link para completar el seguimiento:</p>
-              <div className="bg-gray-100 p-3 rounded-md text-sm border border-gray-300 break-all select-all">
+          <div className="space-y-6 text-center">
+            <div className="bg-[#f0faf5] border border-[#b2e1c4] p-6 rounded-xl shadow-inner">
+              <h2 className="text-green-700 font-semibold text-lg mb-2">✅ Paciente registrado</h2>
+              <p className="text-gray-700 mb-2">Compartí el siguiente link para completar el formulario:</p>
+              <div className="bg-white text-sm p-3 rounded-md border border-gray-300 break-words">
                 {link}
               </div>
               <button
                 onClick={copiarLink}
-                className="mt-3 px-4 py-2 bg-[#0051A3] text-white rounded-lg hover:bg-[#003e7c] transition-all"
+                className="mt-4 px-4 py-2 bg-[#004080] text-white rounded-lg hover:bg-[#002e5c] transition"
               >
                 {copiado ? '📋 Link copiado' : '📎 Copiar link'}
               </button>
@@ -134,7 +130,7 @@ export default function Home() {
 
             <button
               onClick={resetForm}
-              className="text-sm text-sky-700 underline hover:text-sky-900"
+              className="text-sm text-[#004080] underline hover:text-[#002e5c] transition"
             >
               + Cargar otro paciente
             </button>
