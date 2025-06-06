@@ -79,31 +79,56 @@ export default function Home() {
         {!enviado ? (
           <form onSubmit={handleSubmit} className="space-y-7">
             {[
-              { name: 'nombre', label: 'Nombre completo', type: 'text' },
-              { name: 'dni', label: 'DNI', type: 'text' },
-              { name: 'telefono', label: 'Teléfono de contacto', type: 'tel' },
-              { name: 'cirugia', label: 'Tipo de cirugía', type: 'text' },
-              { name: 'fecha_cirugia', label: 'Fecha de cirugía (dd/mm/aaaa)', type: 'text' } // Texto en vez de date
-            ].map(({ name, label, type }) => (
-              <div key={name} className="relative">
+                { name: 'nombre', label: 'Nombre completo', type: 'text' },
+                { name: 'dni', label: 'DNI', type: 'text' },
+                { name: 'telefono', label: 'Teléfono de contacto', type: 'tel' },
+                { name: 'cirugia', label: 'Tipo de cirugía', type: 'text' }
+                ].map(({ name, label, type }) => (
+                <div key={name} className="relative">
+                    <input
+                    type={type}
+                    name={name}
+                    value={(form as any)[name]}
+                    onChange={handleChange}
+                    required
+                    placeholder=" "
+                    autoComplete="off"
+                    className="peer w-full px-3 pt-6 pb-2 border-b-2 border-gray-300 text-gray-800 bg-transparent focus:outline-none focus:border-[#004080] transition-all"
+                    />
+                    <label
+                    htmlFor={name}
+                    className="absolute left-3 top-2.5 text-sm text-gray-500 peer-focus:top-1 peer-focus:text-xs peer-focus:text-[#004080] peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 transition-all"
+                    >
+                    {label}
+                    </label>
+                </div>
+                ))}
+
+                {/* CAMPO DE FECHA CON FORMATEO AUTOMÁTICO */}
+                <div className="relative">
                 <input
-                  type={type}
-                  name={name}
-                  value={(form as any)[name]}
-                  onChange={handleChange}
-                  required
-                  placeholder=" "
-                  autoComplete="off"
-                  className="peer w-full px-3 pt-6 pb-2 border-b-2 border-gray-300 text-gray-800 bg-transparent focus:outline-none focus:border-[#004080] transition-all"
+                    type="text"
+                    name="fecha_cirugia"
+                    value={form.fecha_cirugia}
+                    onChange={(e) => {
+                    let val = e.target.value.replace(/\D/g, '')
+                    if (val.length > 2) val = val.slice(0, 2) + '/' + val.slice(2)
+                    if (val.length > 5) val = val.slice(0, 5) + '/' + val.slice(5, 9)
+                    setForm({ ...form, fecha_cirugia: val })
+                    }}
+                    maxLength={10}
+                    required
+                    placeholder=" "
+                    autoComplete="off"
+                    className="peer w-full px-3 pt-6 pb-2 border-b-2 border-gray-300 text-gray-800 bg-transparent focus:outline-none focus:border-[#004080] transition-all"
                 />
                 <label
-                  htmlFor={name}
-                  className="absolute left-3 top-2.5 text-sm text-gray-500 peer-focus:top-1 peer-focus:text-xs peer-focus:text-[#004080] peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 transition-all"
+                    htmlFor="fecha_cirugia"
+                    className="absolute left-3 top-2.5 text-sm text-gray-500 peer-focus:top-1 peer-focus:text-xs peer-focus:text-[#004080] peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 transition-all"
                 >
-                  {label}
+                    Fecha de cirugía (dd/mm/aaaa)
                 </label>
-              </div>
-            ))}
+                </div>
 
             <button
               type="submit"
