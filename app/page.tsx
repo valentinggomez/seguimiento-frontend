@@ -61,7 +61,7 @@ export default function Home() {
             Panel Médico · Carga de Pacientes
           </h1>
           <p className="text-sm text-sky-600 mt-1 text-center">
-            Sistema digital de seguimiento postoperatorio
+            Sistema Digital de Seguimiento Postoperatorio
           </p>
         </div>
 
