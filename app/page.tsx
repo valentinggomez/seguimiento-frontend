@@ -153,12 +153,12 @@ export default function Home() {
               </button>
             </div>
 
-            <button
-              onClick={resetForm}
-              className="text-sm text-[#004080] underline hover:text-[#002e5c] transition"
-            >
-              + Cargar otro paciente
-            </button>
+              <button
+                onClick={resetForm}
+                  className="inline-flex items-center justify-center gap-2 mt-4 px-5 py-2 rounded-lg bg-white border border-gray-300 text-[#004080] hover:bg-gray-50 hover:shadow transition font-medium"
+                    >
+                  <span className="text-lg">➕</span> Cargar otro paciente
+              </button>
           </div>
         )}
       </div>
