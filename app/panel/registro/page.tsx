@@ -100,7 +100,9 @@ export default function RegistroPaciente() {
     }
 
     const nuevoId = data[0].id
-    setLink(`${window.location.origin}/seguimiento/${nuevoId}`)
+    const linkPublico = `https://seguimiento-frontend.vercel.app/seguimiento/${nuevoId}`
+
+    setLink(linkPublico)
     setEnviado(true)
 
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enviar-whatsapp`, {
@@ -111,7 +113,7 @@ export default function RegistroPaciente() {
         telefono: paciente.telefono,
         cirugia: paciente.cirugia,
         fecha_cirugia: paciente.fecha_cirugia,
-        link: `${window.location.origin}/seguimiento/${nuevoId}`
+        link: linkPublico
       })
     });
   }
