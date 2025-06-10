@@ -102,6 +102,18 @@ export default function RegistroPaciente() {
     const nuevoId = data[0].id
     setLink(`${window.location.origin}/seguimiento/${nuevoId}`)
     setEnviado(true)
+
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enviar-whatsapp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: paciente.nombre,
+        telefono: paciente.telefono,
+        cirugia: paciente.cirugia,
+        fecha_cirugia: paciente.fecha_cirugia,
+        link: `${window.location.origin}/seguimiento/${nuevoId}`
+      })
+    });
   }
 
   const copiarLink = () => {
