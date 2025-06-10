@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { motion } from 'framer-motion'
+import QRCode from "react-qr-code";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -492,7 +493,13 @@ export default function RegistroPaciente() {
               <div className="bg-white border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-800 font-mono break-words">
                 {link}
               </div>
-
+              <div className="mt-5 flex flex-col items-center">
+                <p className="text-sm text-gray-600 mb-2">Escaneá este código QR:</p>
+                <div className="bg-white border border-gray-300 p-4 rounded-xl">
+                  <QRCode value={link} size={180} />
+                </div>
+              </div>
+             
               <motion.button
                 onClick={copiarLink}
                 animate={copiado ? { scale: [1, 1.05, 1], backgroundColor: "#16a34a" } : {}}
